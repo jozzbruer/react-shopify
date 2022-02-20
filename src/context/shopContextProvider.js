@@ -6,8 +6,9 @@ const client = Client.buildClient({
 	storefrontAccessToken: process.env.REACT_APP_SHOPIFY_API,
 });
 
+export const shopContext = createContext();
+
 const ShopContextProvider = (props) => {
-	const shopContext = createContext();
 	const [product, setProduct] = useState({});
 	const [products, setProducts] = useState([]);
 	const [checkout, setcheckout] = useState({});
@@ -26,13 +27,21 @@ const ShopContextProvider = (props) => {
 	};
 
 	const fetchCheckout = async (checkoutId) => {
-		const checkout = await client.checkout.fetch();
+		const checkout = await client.checkout.fetch(checkoutId);
 		setcheckout(checkout);
 	};
 
-	const addItemToCheckout = async () => {};
+	const addItemToCheckout = async (variantId, quantity) => {
+		const lineItemToAdd = [{ variantId, quantity: parseInt(quantity, 10) }];
+		const data = await client.checkout.addLineItems(checkout.id, lineItemToAdd);
+		setcheckout(data);
+		openCart();
+	};
 
-	const removeLineItem = async (id) => {};
+	const removeLineItem = async (id) => {
+		const remove = await client.checkout.removeLineItems(checkout.id, id);
+		setcheckout(remove);
+	};
 
 	const fetchAllProducts = async () => {
 		const products = await client.product.fetchAll();
@@ -44,18 +53,35 @@ const ShopContextProvider = (props) => {
 		setProduct(product);
 	};
 
-	const closeCart = () => {};
-	const openCart = () => {};
-	const closeMenu = () => {};
-	const openMenu = () => {};
+	const closeCart = () => {
+		setIsCartOpen(false);
+	};
+	const openCart = () => {
+		setIsCartOpen(true);
+	};
+	const closeMenu = () => {
+		setIsmenuOpen(false);
+	};
+	const openMenu = () => {
+		setIsmenuOpen(true);
+	};
 
-	console.log(checkout);
 	return (
 		<shopContext.Provider
 			value={{
 				product,
 				products,
 				checkout,
+				closeCart,
+				openCart,
+				closeMenu,
+				openMenu,
+				fetchProductWitHandle,
+				fetchAllProducts,
+				addItemToCheckout,
+				removeLineItem,
+				isCartOpen,
+				isMenuOpen,
 			}}>
 			{props.children}
 		</shopContext.Provider>
