@@ -1,4 +1,4 @@
-import { Flex, Icon, Text, Image, Box, Badge } from '@chakra-ui/react';
+import { Flex, Icon, Image, Box, Badge } from '@chakra-ui/react';
 import { useContext } from 'react';
 import { shopContext } from '../context/shopContextProvider';
 import { MdMenu, MdShoppingBasket } from 'react-icons/md';
@@ -21,7 +21,11 @@ const Navbar = () => {
 				w='30px'
 				h='30px'></Icon>
 			<Link to='/'>
-				<Text>The Jersey Store</Text>
+				<Image
+					src='https://cdn.shopify.com/s/files/1/0472/5705/9496/files/Logologo_1.svg?v=1610055540'
+					w={100}
+					h={100}
+				/>
 			</Link>
 			<Box>
 				<Icon

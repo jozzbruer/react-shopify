@@ -1,6 +1,6 @@
 import { Spinner } from '@chakra-ui/react';
 import React, { useEffect, useContext } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { shopContext } from '../context/shopContextProvider';
 import {
 	Box,
@@ -10,7 +10,6 @@ import {
 	Button,
 	Heading,
 	Flex,
-	Center,
 } from '@chakra-ui/react';
 const ProductPage = () => {
 	const { handle } = useParams();
@@ -23,9 +22,11 @@ const ProductPage = () => {
 
 	if (!product.id)
 		return (
-			<div>
-				<Spinner color='red.700' size='md' />
-			</div>
+			<Box w='100%' h='30vh'>
+				<Flex alignItems='center' justifyContent='center'>
+					<Spinner color='red.700' size='md' />
+				</Flex>
+			</Box>
 		);
 
 	return (
